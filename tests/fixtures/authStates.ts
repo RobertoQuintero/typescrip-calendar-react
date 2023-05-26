@@ -1,5 +1,5 @@
 export const initialState={
-  status:'not-authenticated',
+  status:'checking',
   user: {},
   errorMessage:undefined
 }

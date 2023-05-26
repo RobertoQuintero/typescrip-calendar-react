@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`pruebas en AppRouter debe mostrar el login en caso de no estar autenticado 1`] = `
+exports[`Pruebas en AppRouter debe mostrar el login en caso de no estar autenticado 1`] = `
 <div>
   <div
     class="container login-container"

@@ -3,17 +3,15 @@ import { render, screen } from "@testing-library/react"
 import { useAuthStore } from "../../src/hooks/useAuthStore"
 import { AppRouter } from '../../src/router/AppRouter';
 import { MemoryRouter } from 'react-router-dom';
-import { CalendarPage } from '../../src/calendar/';
+import { CalendarPage } from '../../src/calendar/pages/CalendarPage';
 
-jest.mock('../../src/hooks/useAuthStore')
-
-//para que renderice este componente y no el original
-jest.mock('../../src/calendar/',()=>({
+jest.mock("../../src/hooks/useAuthStore")
+jest.mock('../../src/calendar/pages/CalendarPage',()=>({
   CalendarPage:()=><h1>CalendarPage</h1>
 }))
 
 
-describe('pruebas en AppRouter', () => { 
+describe('Pruebas en AppRouter', () => { 
   const mockCheckAuthToken=jest.fn()
   beforeEach(()=>jest.clearAllMocks())
 
@@ -25,9 +23,8 @@ describe('pruebas en AppRouter', () => {
     })
 
     render(<AppRouter/>)
-    const loading= screen.getByLabelText('cargando')
-    expect(loading.textContent).toBe('Cargando')
-    
+    expect(screen.getByText('Cargando')).toBeTruthy()
+    expect(mockCheckAuthToken).toHaveBeenCalled()
   })
 
   test('debe mostrar el login en caso de no estar autenticado', () => {
@@ -36,14 +33,14 @@ describe('pruebas en AppRouter', () => {
       status:'not-authenticated',
       checkAuthToken:mockCheckAuthToken
     })
-
+    
     const {container}=render(
-      <MemoryRouter initialEntries={['/auth/algo/otracosa']}>
+      <MemoryRouter initialEntries={['/auth2/algo/sdsdsdsd']}>
         <AppRouter/>
       </MemoryRouter>
     )
-    expect(screen.getByText('Ingreso')).toBeTruthy()
-    expect(container).toMatchSnapshot()
+      expect(screen.getByText('Ingreso')).toBeTruthy()
+      expect(container).toMatchSnapshot()
   })
 
   test('debe mostrar el calendario si estamos autenticados', () => {
@@ -52,15 +49,14 @@ describe('pruebas en AppRouter', () => {
       status:'authenticated',
       checkAuthToken:mockCheckAuthToken
     })
-
+    
     render(
-      <MemoryRouter >
+      <MemoryRouter initialEntries={['/auth2/algo/sdsdsdsd']}>
         <AppRouter/>
       </MemoryRouter>
     )
-    
     expect(screen.getByText('CalendarPage')).toBeTruthy()
   })
-  
+
   
 })
